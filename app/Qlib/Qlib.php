@@ -1548,7 +1548,9 @@ class Qlib
         return $ret;
     }
     static function suf_sys(){
-        if(self::is_subdominio()=='aeroclubejf'){
+        $subdomain = Qlib::is_subdominio();
+        $subdomain = str_replace('api-', '', $subdomain);
+        if($subdomain=='aeroclubejf'){
             return '_cs_aero';
         }else{
             return '_cscp';

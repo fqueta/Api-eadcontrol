@@ -22,6 +22,7 @@ class TenancyMiddleware
         $empresa = $request->tenancy;
         $domain = url('');
         $subdomain = Qlib::is_subdominio();
+        $subdomain = str_replace('api-', '', $subdomain);
         if($subdomain=='gerente'){
             // Qlib::selectDefaultConnection('mysql');
         }else{
