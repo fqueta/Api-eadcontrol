@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\api\TesteController;
 use App\Http\Controllers\PdfGenerateController;
+use App\Http\Middleware\TenancyMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,4 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/orcamento-pdf/{token}', [PdfGenerateController::class,'gera_orcamento'])->name('orcamento.pdf');
+Route::middleware(TenancyMiddleware::class)->group(function () {
+    Route::get('/teste', [TesteController::class,'index'])->name('teste');
+    Route::get('/orcamento-pdf/{token}', [PdfGenerateController::class,'gera_orcamento'])->name('orcamento.pdf');
+});

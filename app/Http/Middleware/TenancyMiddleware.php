@@ -31,13 +31,15 @@ class TenancyMiddleware
             $tenancy = empresas::where('usuario',$urlEmpresa)->firstOrFail();
             $arr_t = $tenancy->toArray();
             session()->push('tenancy', $arr_t);
-            // if(isset($arr_t['sistemas']) && Qlib::isJson($arr_t['sistemas'])){
-            //     $arr_sistemas = Qlib::lib_json_array($arr_t['sistemas']);
-            //     $suf_in = '_cs_aero';
-            //     $db = isset($arr_sistemas[$suf_in]['db_name'])?$arr_sistemas[$suf_in]['db_name']:false;
-            // }
+            if(isset($arr_t['sistemas']) && Qlib::isJson($arr_t['sistemas'])){
+                $arr_sistemas = Qlib::lib_json_array($arr_t['sistemas']);
+                $suf_in = Qlib::suf_sys();
+                // $db = isset($arr_sistemas[$suf_in]['db_name'])?$arr_sistemas[$suf_in]['db_name']:false;
+                if(is_array($arr_sistemas[$suf_in])){
+                    Qlib::selectDefaultConnection('tenant',$arr_sistemas[$suf_in]);
+                }
+            }
             //carrega a nova coneaxao
-            Qlib::selectDefaultConnection('tenant');
             // (new Connect($tenancy))->setDefault();
         }
         return $next($request);

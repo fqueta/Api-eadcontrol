@@ -188,7 +188,27 @@ class MatriculasController extends Controller
     {
         //
     }
-
+    /**
+     * metodo para salvar uma matrícula
+     * @param $d = dados para serem salvos no banco de dados
+     */
+    public function salvarMatriculas($d=[]){
+        $ret['exec'] = false;
+        $ret['dados'] = $d;
+        $ret['add'] = false;
+        if(isset($d['id_cliente']) && !empty($d['id_cliente']) && isset($d['id_curso']) && !empty($d['id_curso'])){
+            $enc = Matricula::where('id_cliente', $d['id_cliente'])->where('id_curso', $d['id_curso'])->where('excluido', 'n')->get();
+            if($enc){
+                //update
+                $ret['add'] = Matricula::where('id_cliente', $d['id_cliente'])->where('id_curso', $d['id_curso'])->update($d);
+            }else{
+                //add
+                $ret['add'] = Matricula::create($d);
+                dd($ret);
+            }
+        }
+        return $ret;
+    }
     /**
      * Display the specified resource.
      *

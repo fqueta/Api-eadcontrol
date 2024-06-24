@@ -1561,19 +1561,30 @@ class Qlib
         }
         return $ret;
     }
-    static function selectDefaultConnection($connection='mysql',$db=false){
+    static function selectDefaultConnection($connection='mysql',$conn=false){
         if($connection=='tenant'){
-            $arr_tenancy = session()->get('tenancy');
-            if(isset($arr_tenancy[0]['sistemas']) && Qlib::isJson($arr_tenancy[0]['sistemas'])){
-                $arr_sistemas = Qlib::lib_json_array($arr_tenancy[0]['sistemas']);
-                $suf_in = self::suf_sys();
-                $db = isset($arr_sistemas[$suf_in]['db_name'])?$arr_sistemas[$suf_in]['db_name']:false;
-                $user = isset($arr_sistemas[$suf_in]['db_user'])?$arr_sistemas[$suf_in]['db_user']:false;
-                $pass = isset($arr_sistemas[$suf_in]['db_senha'])?$arr_sistemas[$suf_in]['db_senha']:false;
+            if(isset($conn['db_name']) && isset($conn['db_user']) && isset($conn['db_senha'])){
+                $db = isset($conn['db_name'])?$conn['db_name']:false;
+                $user = isset($conn['db_user'])?$conn['db_user']:false;
+                $pass = isset($conn['db_senha'])?$conn['db_senha']:false;
                 if($user && $db){
                     Config::set('database.connections.tenant.database', trim($db));
                     Config::set('database.connections.tenant.username', trim($user));
                     Config::set('database.connections.tenant.password', trim($pass));
+                }
+            }else{
+                $arr_tenancy = session()->get('tenancy');
+                if(isset($arr_tenancy[0]['sistemas']) && Qlib::isJson($arr_tenancy[0]['sistemas'])){
+                    $arr_sistemas = Qlib::lib_json_array($arr_tenancy[0]['sistemas']);
+                    $suf_in = self::suf_sys();
+                    $db = isset($arr_sistemas[$suf_in]['db_name'])?$arr_sistemas[$suf_in]['db_name']:false;
+                    $user = isset($arr_sistemas[$suf_in]['db_user'])?$arr_sistemas[$suf_in]['db_user']:false;
+                    $pass = isset($arr_sistemas[$suf_in]['db_senha'])?$arr_sistemas[$suf_in]['db_senha']:false;
+                    if($user && $db){
+                        Config::set('database.connections.tenant.database', trim($db));
+                        Config::set('database.connections.tenant.username', trim($user));
+                        Config::set('database.connections.tenant.password', trim($pass));
+                    }
                 }
             }
             // $clone = config('database.connections.mysql');
