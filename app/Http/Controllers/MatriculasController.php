@@ -195,16 +195,33 @@ class MatriculasController extends Controller
     public function salvarMatriculas($d=[]){
         $ret['exec'] = false;
         $ret['dados'] = $d;
-        $ret['add'] = false;
         if(isset($d['id_cliente']) && !empty($d['id_cliente']) && isset($d['id_curso']) && !empty($d['id_curso'])){
             $enc = Matricula::where('id_cliente', $d['id_cliente'])->where('id_curso', $d['id_curso'])->where('excluido', 'n')->get();
-            if($enc){
+            if($enc->count() > 0){
                 //update
-                $ret['add'] = Matricula::where('id_cliente', $d['id_cliente'])->where('id_curso', $d['id_curso'])->update($d);
+                try {
+                    $save = Matricula::where('id_cliente', $d['id_cliente'])->where('id_curso', $d['id_curso'])->update($d);
+                    $ret['exec'] = true;
+                    $ret['mens'] = 'Atualizado com sucesso! id_cliente='.$d['id_cliente'].' id_curso='.$d['id_curso'].'' ;
+                    $ret['enc'] = $enc;
+                } catch (\Exception $e) {
+                    //throw $e;
+                    $ret['exec'] = false;
+                    $ret['mens'] = 'Erro ao atualizar o registro '. $e->getMessage();
+                }
             }else{
                 //add
-                $ret['add'] = Matricula::create($d);
-                dd($ret);
+                try {
+                    $save = Matricula::create($d);
+                    $ret['exec'] = true;
+                    $ret['mens'] = 'Salvo com sucesso!';
+                    $ret['salv'] = $d;
+                } catch (\Exception $e) {
+                    //throw $e;
+                    $ret['exec'] = false;
+                    $ret['mens'] = 'Erro ao salvar o registro '. $e->getMessage();
+                }
+
             }
         }
         return $ret;
