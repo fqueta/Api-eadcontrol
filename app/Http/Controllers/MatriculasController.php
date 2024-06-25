@@ -210,7 +210,7 @@ class MatriculasController extends Controller
                         $v['data_seguir'],
                         $v['data_inicio'],
                         $v['data_documento'],
-                        $v['data_contrato'],
+                        // $v['data_contrato'],
                         $v['data_matricula'],
                         $v['contrato'],
                     );
@@ -226,7 +226,7 @@ class MatriculasController extends Controller
                     // $v['data_matricula'] = date('Y-m-d H:i:s');
                     $v['data_agendamento'] = date('Y-m-d');
                     // $v['data_inicio'] = date('Y-m-d H:i:s');
-                    // $v['data_contrato'] = date('Y-m-d H:i:s');
+                    $v['data_contrato'] = date('Y-m-d H:i:s');
                     $v['tag_sys'] = Qlib::lib_array_json(['add_sisema']);
                     $v['historico'] = Qlib::lib_array_json([
                         'data'=>date('d/m/Y H:i:s'),
