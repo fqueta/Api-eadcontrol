@@ -218,7 +218,7 @@ class MatriculasController extends Controller
                     $v['id_curso'] = 44;
                     $v['id_turma'] = 'a';
                     $v['status'] = 2;
-                    $v['status'] = 2;
+                    $v['contrato'] = '';
                     $v['memo'] = 'Via Api';
                     $v['ativo'] = 's';
                     $v['validade'] = 365;
