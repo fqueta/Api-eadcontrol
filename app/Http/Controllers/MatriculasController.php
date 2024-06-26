@@ -220,6 +220,7 @@ class MatriculasController extends Controller
                     $v['status'] = 2;
                     $v['status'] = 2;
                     $v['memo'] = 'Via Api';
+                    $v['ativo'] = 's';
                     $v['validade'] = 365;
                     // $v['data'] = date('Y-m-d H:i:s');
                     $v['data_situacao'] = date('Y-m-d H:i:s');
